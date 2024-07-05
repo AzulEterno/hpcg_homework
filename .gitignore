@@ -6,3 +6,4 @@ bin/xhpcg
 bin/hpcg20*.txt
 .DS_Store
 build*
+.vscode

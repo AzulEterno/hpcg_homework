@@ -49,7 +49,7 @@ int ComputeWAXPBY_Intel_AVX_zcy(const local_int_t n, const double alpha, const V
 */
 int ComputeWAXPBY(const local_int_t n, const double alpha, const Vector& x,
     const double beta, const Vector& y, Vector& w, bool& isOptimized) {
-  
+
   if (g_optimization_type == OPTIM_TYPE_REF) {
     std::cout << "ComputeWAXPBY_ref" << std::endl;
     return ComputeWAXPBY_ref(n, alpha, x, beta, y, w);
