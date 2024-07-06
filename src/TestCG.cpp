@@ -18,20 +18,20 @@
  HPCG routine
  */
 
-// Changelog
-//
-// Version 0.4
-// - Added timing of setup time for sparse MV
-// - Corrected percentages reported for sparse MV with overhead
-//
-/////////////////////////////////////////////////////////////////////////
+ // Changelog
+ //
+ // Version 0.4
+ // - Added timing of setup time for sparse MV
+ // - Corrected percentages reported for sparse MV with overhead
+ //
+ /////////////////////////////////////////////////////////////////////////
 
 #include <fstream>
 #include <iostream>
 using std::endl;
 #include <vector>
 #include "hpcg.hpp"
-
+#include "config.hpp"
 #include "TestCG.hpp"
 #include "CG.hpp"
 
@@ -49,11 +49,11 @@ using std::endl;
 
   @see CG()
  */
-int TestCG(SparseMatrix & A, CGData & data, Vector & b, Vector & x, TestCGData & testcg_data) {
+int TestCG(SparseMatrix& A, CGData& data, Vector& b, Vector& x, TestCGData& testcg_data) {
 
 
   // Use this array for collecting timing information
-  std::vector< double > times(8,0.0);
+  std::vector< double > times(8, 0.0);
   // Temporary storage for holding original diagonal and RHS
   Vector origDiagA, exaggeratedDiagA, origB;
   InitializeVector(origDiagA, A.localNumberOfRows);
@@ -65,13 +65,14 @@ int TestCG(SparseMatrix & A, CGData & data, Vector & b, Vector & x, TestCGData &
 
   // Modify the matrix diagonal to greatly exaggerate diagonal values.
   // CG should converge in about 10 iterations for this problem, regardless of problem size
-  for (local_int_t i=0; i< A.localNumberOfRows; ++i) {
+  for (local_int_t i = 0; i < A.localNumberOfRows; ++i) {
     global_int_t globalRowID = A.localToGlobalMap[i];
-    if (globalRowID<9) {
-      double scale = (globalRowID+2)*1.0e6;
+    if (globalRowID < 9) {
+      double scale = (globalRowID + 2) * 1.0e6;
       ScaleVectorValue(exaggeratedDiagA, i, scale);
       ScaleVectorValue(b, i, scale);
-    } else {
+    }
+    else {
       ScaleVectorValue(exaggeratedDiagA, i, 1.0e6);
       ScaleVectorValue(b, i, 1.0e6);
     }
@@ -88,22 +89,23 @@ int TestCG(SparseMatrix & A, CGData & data, Vector & b, Vector & x, TestCGData &
   testcg_data.expected_niters_prec = 2;   // For the preconditioned case, we should take about 1 iteration, permit 2
   testcg_data.niters_max_no_prec = 0;
   testcg_data.niters_max_prec = 0;
-  for (int k=0; k<2; ++k) { // This loop tests both unpreconditioned and preconditioned runs
+  for (int k = 0; k < 2; ++k) { // This loop tests both unpreconditioned and preconditioned runs
     int expected_niters = testcg_data.expected_niters_no_prec;
-    if (k==1) expected_niters = testcg_data.expected_niters_prec;
-    for (int i=0; i< numberOfCgCalls; ++i) {
+    if (k == 1) expected_niters = testcg_data.expected_niters_prec;
+    for (int i = 0; i < numberOfCgCalls; ++i) {
       ZeroVector(x); // Zero out x
-      int ierr = CG(A, data, b, x, maxIters, tolerance, niters, normr, normr0, &times[0], k==1);
+      int ierr = CG(A, data, b, x, maxIters, tolerance, niters, normr, normr0, &times[0], k == 1);
       if (ierr) HPCG_fout << "Error in call to CG: " << ierr << ".\n" << endl;
       if (niters <= expected_niters) {
         ++testcg_data.count_pass;
-      } else {
+      }
+      else {
         ++testcg_data.count_fail;
       }
-      if (k==0 && niters>testcg_data.niters_max_no_prec) testcg_data.niters_max_no_prec = niters; // Keep track of largest iter count
-      if (k==1 && niters>testcg_data.niters_max_prec) testcg_data.niters_max_prec = niters; // Same for preconditioned run
-      if (A.geom->rank==0) {
-        HPCG_fout << "Call [" << i << "] Number of Iterations [" << niters <<"] Scaled Residual [" << normr/normr0 << "]" << endl;
+      if (k == 0 && niters > testcg_data.niters_max_no_prec) testcg_data.niters_max_no_prec = niters; // Keep track of largest iter count
+      if (k == 1 && niters > testcg_data.niters_max_prec) testcg_data.niters_max_prec = niters; // Same for preconditioned run
+      if (A.geom->rank == 0) {
+        HPCG_fout << "Call [" << i << "] Number of Iterations [" << niters << "] Scaled Residual [" << normr / normr0 << "]" << endl;
         if (niters > expected_niters)
           HPCG_fout << " Expected " << expected_niters << " iterations.  Performed " << niters << "." << endl;
       }

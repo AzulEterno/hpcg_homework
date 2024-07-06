@@ -21,7 +21,7 @@
 #include "OptimizeProblem.hpp"
 #include "Vector.hpp"
 #include <iostream>
-#include "config.hpp"
+
 
 #include <cstring>
 #include "a_contral.hpp"
@@ -35,7 +35,7 @@
 #endif
 
 
-int OptimizeProblem_lmb(SparseMatrix &A, CGData &data, Vector &b, Vector &x, Vector &xexact);
+int OptimizeProblem_lmb(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector& xexact);
 
 int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
 
@@ -697,207 +697,213 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
   @see GenerateGeometry
   @see GenerateProblem
 */
-int OptimizeProblem(SparseMatrix & A, CGData & data, Vector & b, Vector & x, Vector & xexact) {
+int OptimizeProblem(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector& xexact) {
   if (g_optimization_type == OPTIM_TYPE_REF) {
     // Do nothing
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblem do nothing" << std::endl;
-    return 0; 
+#endif
+    return 0;
   }
   else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblemGeneral_zcy" << std::endl;
+#endif
     return OptimizeProblemGeneral_zcy(A, data, b, x, xexact);
   }
   else {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblem_lmb" << std::endl;
+#endif
     return OptimizeProblem_lmb(A, data, b, x, xexact);
   }
 }
 
 // Helper function (see OptimizeProblem.hpp for details)
-double OptimizeProblemMemoryUse(const SparseMatrix & A) {
+double OptimizeProblemMemoryUse(const SparseMatrix& A) {
 
   return 0.0;
 
 }
 
 // 转换至ELL格式
-void OptimizeMatrixToEll(SparseMatrix &A)
+void OptimizeMatrixToEll(SparseMatrix& A)
 {
-	const int nrows = A.localNumberOfRows;
-	// int idx;
-	// MPI_Comm_rank(MPI_COMM_WORLD, &idx);
-	// if (idx == 0)
-	// {
-	// 	printf("%d\n", nrows);
-	// 	//printf("%lld\n", A.totalNumberOfRows);
-	// 	//printf("%d\n", ELL_SIZE * nrows);
-	// }
+  const int nrows = A.localNumberOfRows;
+  // int idx;
+  // MPI_Comm_rank(MPI_COMM_WORLD, &idx);
+  // if (idx == 0)
+  // {
+  // 	printf("%d\n", nrows);
+  // 	//printf("%lld\n", A.totalNumberOfRows);
+  // 	//printf("%d\n", ELL_SIZE * nrows);
+  // }
 
-	// 内存分配
-	A.ellVal = new double[ELL_SIZE * nrows];
-	A.ellCols = new local_int_t[ELL_SIZE * nrows];
-	A.ellDiag = new double *[nrows];
+  // 内存分配
+  A.ellVal = new double[ELL_SIZE * nrows];
+  A.ellCols = new local_int_t[ELL_SIZE * nrows];
+  A.ellDiag = new double* [nrows];
 
-	// allocateMemoryToOptimaize+=
+  // allocateMemoryToOptimaize+=
 
 #ifndef HPCG_NO_OPENMP
 #pragma omp parallel for // 将CSR格式转为ELL存储
 #endif
-	for (int i = 0; i < nrows; i++)
-	{
-		const double *const cur_vals = A.matrixValues[i]; // 第i个矩阵
-		const local_int_t *const cur_idx = A.mtxIndL[i];  // 列索引
-		const int cur_nnz = A.nonzerosInRow[i];			  // 非零元素的数量
+  for (int i = 0; i < nrows; i++)
+  {
+    const double* const cur_vals = A.matrixValues[i]; // 第i个矩阵
+    const local_int_t* const cur_idx = A.mtxIndL[i];  // 列索引
+    const int cur_nnz = A.nonzerosInRow[i];			  // 非零元素的数量
 
-		int non_zero_idx = 0;
-		// printf("ELL-%d:",i);
-		for (int j = 0; j < cur_nnz; j++) // 遍历非零元素
-		{
-			// printf("%f ", A.mtxIndL[i][j]);
-			A.ellVal[i * ELL_SIZE + j] = cur_vals[j];
-			A.ellCols[i * ELL_SIZE + j] = cur_idx[j];
-			// 更新对角线索引矩阵
+    int non_zero_idx = 0;
+    // printf("ELL-%d:",i);
+    for (int j = 0; j < cur_nnz; j++) // 遍历非零元素
+    {
+      // printf("%f ", A.mtxIndL[i][j]);
+      A.ellVal[i * ELL_SIZE + j] = cur_vals[j];
+      A.ellCols[i * ELL_SIZE + j] = cur_idx[j];
+      // 更新对角线索引矩阵
 
-			if (A.matrixDiagonal[i] == &cur_vals[j]) // 判断是否为对角线元素
-			{
-				// printf("对角线元素：%f\n",*A.matrixDiagonal[i]);
-				// A.matrixDiagonal[i] = &A.ellVal[i * ELL_SIZE + j]; // 更新对角线元素索引
-				A.ellDiag[i] = &A.ellVal[i * ELL_SIZE + j]; // 更新对角线元素索引
-			}
+      if (A.matrixDiagonal[i] == &cur_vals[j]) // 判断是否为对角线元素
+      {
+        // printf("对角线元素：%f\n",*A.matrixDiagonal[i]);
+        // A.matrixDiagonal[i] = &A.ellVal[i * ELL_SIZE + j]; // 更新对角线元素索引
+        A.ellDiag[i] = &A.ellVal[i * ELL_SIZE + j]; // 更新对角线元素索引
+      }
 
-			non_zero_idx++;
-		}
-		// std::cout<<A.matrixDiagonal[i]<<" : "<<A.ellDiag[i]<<std::endl;
-		//  printf("\n");
-		for (; non_zero_idx < ELL_SIZE; non_zero_idx++)
-		{
-			A.ellCols[i * ELL_SIZE + non_zero_idx] = -1; // 空位置置为-1
-		}
-	}
+      non_zero_idx++;
+    }
+    // std::cout<<A.matrixDiagonal[i]<<" : "<<A.ellDiag[i]<<std::endl;
+    //  printf("\n");
+    for (; non_zero_idx < ELL_SIZE; non_zero_idx++)
+    {
+      A.ellCols[i * ELL_SIZE + non_zero_idx] = -1; // 空位置置为-1
+    }
+  }
 }
 
 // 单点染色
-void OptimizeMultiColoring(SparseMatrix &A)
+void OptimizeMultiColoring(SparseMatrix& A)
 {
-	const local_int_t nrow = A.localNumberOfRows;
+  const local_int_t nrow = A.localNumberOfRows;
 
-	// 初始化所有颜色为'nrow'，表示未初始化
-	// std::vector<local_int_t> colors(nrow, nrow); // value `nrow' means `uninitialized'; initialized colors go from 0 to nrow-1
-	A.colors = std::vector<local_int_t>(nrow, nrow);
-	A.totalColors = 1;
-	A.colors[0] = 0; // 为第一个点分配颜色0 first point gets color 0
+  // 初始化所有颜色为'nrow'，表示未初始化
+  // std::vector<local_int_t> colors(nrow, nrow); // value `nrow' means `uninitialized'; initialized colors go from 0 to nrow-1
+  A.colors = std::vector<local_int_t>(nrow, nrow);
+  A.totalColors = 1;
+  A.colors[0] = 0; // 为第一个点分配颜色0 first point gets color 0
 
-	// Finds colors in a greedy (a likely non-optimal) fashion.
+  // Finds colors in a greedy (a likely non-optimal) fashion.
 
-	for (local_int_t i = 1; i < nrow; ++i)
-	{
-		if (A.colors[i] == nrow) // 如果颜色未分配
-		{						 // if color not assigned
-			std::vector<int> assigned(A.totalColors, 0);
-			int currentlyAssigned = 0; // 当强已经被分配颜色
+  for (local_int_t i = 1; i < nrow; ++i)
+  {
+    if (A.colors[i] == nrow) // 如果颜色未分配
+    {						 // if color not assigned
+      std::vector<int> assigned(A.totalColors, 0);
+      int currentlyAssigned = 0; // 当强已经被分配颜色
 
-			local_int_t *currentColIndices = &A.ellCols[i * ELL_SIZE]; // 列索引
-			// const local_int_t *const currentColIndices = A.mtxIndL[i];
+      local_int_t* currentColIndices = &A.ellCols[i * ELL_SIZE]; // 列索引
+      // const local_int_t *const currentColIndices = A.mtxIndL[i];
 
-			// const int currentNumberOfNonzeros = A.nonzerosInRow[i];
+      // const int currentNumberOfNonzeros = A.nonzerosInRow[i];
 
-			for (int j = 0; j < ELL_SIZE; j++) // 如果颜色未分配
-			{
-				if (currentColIndices[j] == -1)
-					break;
-				local_int_t curCol = currentColIndices[j]; // 遍历邻居, 邻近点列索引
+      for (int j = 0; j < ELL_SIZE; j++) // 如果颜色未分配
+      {
+        if (currentColIndices[j] == -1)
+          break;
+        local_int_t curCol = currentColIndices[j]; // 遍历邻居, 邻近点列索引
 
-				if (curCol < i) // 邻居点已经被染色
-				{
-					if (assigned[A.colors[curCol]] == 0)
-						currentlyAssigned += 1;
-					assigned[A.colors[curCol]] = 1; // 这个颜色已被'curCol'点使用 this color has been used before by `curCol' point
-				} // else // could take advantage of indices being sorted
-			}
+        if (curCol < i) // 邻居点已经被染色
+        {
+          if (assigned[A.colors[curCol]] == 0)
+            currentlyAssigned += 1;
+          assigned[A.colors[curCol]] = 1; // 这个颜色已被'curCol'点使用 this color has been used before by `curCol' point
+        } // else // could take advantage of indices being sorted
+      }
 
-			if (currentlyAssigned < A.totalColors)		// 如果至少有一种颜色可用
-			{											// if there is at least one color left to use
-				for (int j = 0; j < A.totalColors; ++j) // try all current colors
-					if (assigned[j] == 0)
-					{ // if no neighbor with this color
-						A.colors[i] = j;
-						break;
-					}
-			}
-			else // 没有颜色可用
-			{
-				if (A.colors[i] == nrow)
-				{
-					A.colors[i] = A.totalColors;
-					A.totalColors += 1;
-				}
-			}
-		}
-	}
-	return;
+      if (currentlyAssigned < A.totalColors)		// 如果至少有一种颜色可用
+      {											// if there is at least one color left to use
+        for (int j = 0; j < A.totalColors; ++j) // try all current colors
+          if (assigned[j] == 0)
+          { // if no neighbor with this color
+            A.colors[i] = j;
+            break;
+          }
+      }
+      else // 没有颜色可用
+      {
+        if (A.colors[i] == nrow)
+        {
+          A.colors[i] = A.totalColors;
+          A.totalColors += 1;
+        }
+      }
+    }
+  }
+  return;
 }
 
 // 分块染色
-void OptimizeMultiColoringBlock(SparseMatrix &A)
+void OptimizeMultiColoringBlock(SparseMatrix& A)
 {
-	const local_int_t nrow = A.localNumberOfRows;
+  const local_int_t nrow = A.localNumberOfRows;
 
-	A.colors = std::vector<local_int_t>(nrow, nrow);
-	A.totalColors = 1;
-	A.colors[0] = 0; // 为第一个点分配颜色0 first point gets color 0
+  A.colors = std::vector<local_int_t>(nrow, nrow);
+  A.totalColors = 1;
+  A.colors[0] = 0; // 为第一个点分配颜色0 first point gets color 0
 
-	int nx = A.geom->nx; // 子网格的尺寸
-	int npy = A.geom->ny;
-	int npz = A.geom->nz;
-	
-	
-	for (local_int_t i = nx; i < nrow; i += nx) // 以npx为间隔
-	{
-		if (A.colors[i] == nrow) // 如果颜色未分配
-		{
-			std::vector<int> assigned(A.totalColors, 0); // 初始化邻居被染色标记数组
-			int currentlyAssigned = 0;					 // 当前已经被分配颜色
+  int nx = A.geom->nx; // 子网格的尺寸
+  int npy = A.geom->ny;
+  int npz = A.geom->nz;
 
-			local_int_t *currentColIndices = &A.ellCols[i * ELL_SIZE]; // 列索引
 
-			for (int j = 0; j < ELL_SIZE; j++) // 遍历邻居结点
-			{
-				if (currentColIndices[j] == -1)
-					break;
-				local_int_t curCol = currentColIndices[j]; // 邻近点列索引
-				if (curCol % nx == 0)  // yz平面的块头结点
-				{
-					if (curCol < i) // 邻居点已经被染色
-					{
-						if (assigned[A.colors[curCol]] == 0)
-							currentlyAssigned += 1;
-						assigned[A.colors[curCol]] = 1; // 这个颜色已被'curCol'点使用 this color has been used before by `curCol' point
-					} // else // could take advantage of indices being sorted
-				}
-			}
+  for (local_int_t i = nx; i < nrow; i += nx) // 以npx为间隔
+  {
+    if (A.colors[i] == nrow) // 如果颜色未分配
+    {
+      std::vector<int> assigned(A.totalColors, 0); // 初始化邻居被染色标记数组
+      int currentlyAssigned = 0;					 // 当前已经被分配颜色
 
-			if (currentlyAssigned < A.totalColors)		// 如果至少有一种颜色可用
-			{											// if there is at least one color left to use
-				for (int j = 0; j < A.totalColors; ++j) // try all current colors
-					if (assigned[j] == 0)
-					{ // if no neighbor with this color
-						A.colors[i] = j;
-						break;
-					}
-			}
-			else // 没有颜色可用
-			{
-				if (A.colors[i] == nrow)
-				{
-					A.colors[i] = A.totalColors;
-					A.totalColors += 1;
-				}
-			}
-		}
-	}
-	//printf("染色总数%d\n",A.totalColors);
+      local_int_t* currentColIndices = &A.ellCols[i * ELL_SIZE]; // 列索引
 
-	return;
+      for (int j = 0; j < ELL_SIZE; j++) // 遍历邻居结点
+      {
+        if (currentColIndices[j] == -1)
+          break;
+        local_int_t curCol = currentColIndices[j]; // 邻近点列索引
+        if (curCol % nx == 0)  // yz平面的块头结点
+        {
+          if (curCol < i) // 邻居点已经被染色
+          {
+            if (assigned[A.colors[curCol]] == 0)
+              currentlyAssigned += 1;
+            assigned[A.colors[curCol]] = 1; // 这个颜色已被'curCol'点使用 this color has been used before by `curCol' point
+          } // else // could take advantage of indices being sorted
+        }
+      }
+
+      if (currentlyAssigned < A.totalColors)		// 如果至少有一种颜色可用
+      {											// if there is at least one color left to use
+        for (int j = 0; j < A.totalColors; ++j) // try all current colors
+          if (assigned[j] == 0)
+          { // if no neighbor with this color
+            A.colors[i] = j;
+            break;
+          }
+      }
+      else // 没有颜色可用
+      {
+        if (A.colors[i] == nrow)
+        {
+          A.colors[i] = A.totalColors;
+          A.totalColors += 1;
+        }
+      }
+    }
+  }
+  //printf("染色总数%d\n",A.totalColors);
+
+  return;
 }
 
 // // 染色粗矩阵
@@ -918,145 +924,145 @@ void OptimizeMultiColoringBlock(SparseMatrix &A)
 // }
 
 // 染色重排
-void OptimizeMultiColoringRearrange(SparseMatrix &A)
+void OptimizeMultiColoringRearrange(SparseMatrix& A)
 {
-	// 内存分配
+  // 内存分配
 
-	// double *tempB = new double[b.localLength]; // 向量b重排的buffer
+  // double *tempB = new double[b.localLength]; // 向量b重排的buffer
 
-	const local_int_t nrows = A.localNumberOfRows;
+  const local_int_t nrows = A.localNumberOfRows;
 
-	A.toNotRearrange = new local_int_t[nrows];
+  A.toNotRearrange = new local_int_t[nrows];
 
-	double *tempVal = new double[ELL_SIZE * nrows];
-	double **tempDiag = new double *[nrows];
-	local_int_t *tempCol = new local_int_t[ELL_SIZE * nrows];
+  double* tempVal = new double[ELL_SIZE * nrows];
+  double** tempDiag = new double* [nrows];
+  local_int_t* tempCol = new local_int_t[ELL_SIZE * nrows];
 
-	int totalColors = A.totalColors;
-	std::vector<local_int_t> colors = A.colors;
-	local_int_t *colorStart = new local_int_t[totalColors + 1]; // 记录每种颜色的开始索引
+  int totalColors = A.totalColors;
+  std::vector<local_int_t> colors = A.colors;
+  local_int_t* colorStart = new local_int_t[totalColors + 1]; // 记录每种颜色的开始索引
 
-	colorStart[totalColors] = nrows; // 索引截至
+  colorStart[totalColors] = nrows; // 索引截至
 
-	int cur = 0;
-	for (int i = 0; i < totalColors; i++) // 遍历颜色
-	{
-		colorStart[i] = cur;
-		for (int j = 0; j < nrows; j++)
-		{
-			if (colors[j] == i) // 节点颜色与当前相同
-			{
-				A.toNotRearrange[cur] = j;
-				// 矩阵内存拷贝
-				memcpy(&tempVal[cur * ELL_SIZE], &A.ellVal[j * ELL_SIZE], ELL_SIZE * sizeof(double));
-				// 列索引拷贝
-				memcpy(&tempCol[cur * ELL_SIZE], &A.ellCols[j * ELL_SIZE], ELL_SIZE * sizeof(local_int_t));
-				// if (rank == 0)
-				// {
-				// 	tempB[cur] = b.values[j];
-				// }
+  int cur = 0;
+  for (int i = 0; i < totalColors; i++) // 遍历颜色
+  {
+    colorStart[i] = cur;
+    for (int j = 0; j < nrows; j++)
+    {
+      if (colors[j] == i) // 节点颜色与当前相同
+      {
+        A.toNotRearrange[cur] = j;
+        // 矩阵内存拷贝
+        memcpy(&tempVal[cur * ELL_SIZE], &A.ellVal[j * ELL_SIZE], ELL_SIZE * sizeof(double));
+        // 列索引拷贝
+        memcpy(&tempCol[cur * ELL_SIZE], &A.ellCols[j * ELL_SIZE], ELL_SIZE * sizeof(local_int_t));
+        // if (rank == 0)
+        // {
+        // 	tempB[cur] = b.values[j];
+        // }
 
-				for (int k = 0; k < ELL_SIZE; k++)
-				{
-					// tempVal[cur * ELL_SIZE + k] = A.ellVal[j * ELL_SIZE + k];
-					// tempCol[cur * ELL_SIZE + k] = A.ellCols[j * ELL_SIZE + k];
+        for (int k = 0; k < ELL_SIZE; k++)
+        {
+          // tempVal[cur * ELL_SIZE + k] = A.ellVal[j * ELL_SIZE + k];
+          // tempCol[cur * ELL_SIZE + k] = A.ellCols[j * ELL_SIZE + k];
 
-					if (&A.ellVal[j * ELL_SIZE + k] == A.ellDiag[j]) // 判断是否为对角线元素
-					{
-						tempDiag[cur] = &tempVal[cur * ELL_SIZE + k];
-					}
-				}
+          if (&A.ellVal[j * ELL_SIZE + k] == A.ellDiag[j]) // 判断是否为对角线元素
+          {
+            tempDiag[cur] = &tempVal[cur * ELL_SIZE + k];
+          }
+        }
 
-				// tempDiag[cur] = A.matrixDiagonal[j];
-				cur++; // 游标自加
-			}
-		}
-	}
+        // tempDiag[cur] = A.matrixDiagonal[j];
+        cur++; // 游标自加
+      }
+    }
+  }
 
-	// // 释放未重排的数组
-	delete[] A.ellCols;
-	delete[] A.ellVal;
-	delete[] A.ellDiag;
-	// delete[] b.values;
-	//  delete[] A.matrixDiagonal;
+  // // 释放未重排的数组
+  delete[] A.ellCols;
+  delete[] A.ellVal;
+  delete[] A.ellDiag;
+  // delete[] b.values;
+  //  delete[] A.matrixDiagonal;
 
-	A.ellVal = tempVal;
-	A.ellCols = tempCol;
-	A.ellDiag = tempDiag;
-	// A.matrixDiagonal = tempDiag;
-	A.colorStart = colorStart;
-	// b.values = tempB;
-	printf("染色重排结束\n");
+  A.ellVal = tempVal;
+  A.ellCols = tempCol;
+  A.ellDiag = tempDiag;
+  // A.matrixDiagonal = tempDiag;
+  A.colorStart = colorStart;
+  // b.values = tempB;
+  printf("染色重排结束\n");
 }
 
 // 问题优化
-int OptimizeProblem_lmb(SparseMatrix &A, CGData &data, Vector &b, Vector &x, Vector &xexact)
+int OptimizeProblem_lmb(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector& xexact)
 {
-	int idx;
-	MPI_Comm_rank(MPI_COMM_WORLD, &idx); // 获取进程id
+  int idx;
+  MPI_Comm_rank(MPI_COMM_WORLD, &idx); // 获取进程id
 
-	// This function can be used to completely transform any part of the data structures.
-	// Right now it does nothing, so compiling with a check for unused variables results in complaints
+  // This function can be used to completely transform any part of the data structures.
+  // Right now it does nothing, so compiling with a check for unused variables results in complaints
 
 #if defined(HPCG_USE_ELL)
-	if (idx == 0)
-		printf("转变为ELL存储\n");
-	// 从csr格式变为ELL格式
-	OptimizeMatrixToEll(A);
+  if (idx == 0)
+    printf("转变为ELL存储\n");
+  // 从csr格式变为ELL格式
+  OptimizeMatrixToEll(A);
 
-	// 将粗网格转变为ELL格式
-	int numberOfMgLevels = 4; // 粗网格的层次
-	SparseMatrix *coreseMatrix = &A;
-	for (int level = 1; level < numberOfMgLevels; level++)
-	{
-		coreseMatrix = coreseMatrix->Ac;
-		OptimizeMatrixToEll(*coreseMatrix);
-	}
+  // 将粗网格转变为ELL格式
+  int numberOfMgLevels = 4; // 粗网格的层次
+  SparseMatrix* coreseMatrix = &A;
+  for (int level = 1; level < numberOfMgLevels; level++)
+  {
+    coreseMatrix = coreseMatrix->Ac;
+    OptimizeMatrixToEll(*coreseMatrix);
+  }
 #endif
 
-// 染色法预处理
+  // 染色法预处理
 #if defined(HPCG_USE_POINT_MULTICOLORING)
-	if (idx == 0)
-		printf("单点染色\n");
-	OptimizeMultiColoring(A); // 将矩阵A染色
+  if (idx == 0)
+    printf("单点染色\n");
+  OptimizeMultiColoring(A); // 将矩阵A染色
 
-	// 粗处理网格染色
-	coreseMatrix = &A;
-	for (int level = 1; level < numberOfMgLevels; level++)
-	{
-		//OptimizeMultiColoringCoarse(*coreseMatrix);
-		OptimizeMultiColoring(*coreseMatrix);
-		coreseMatrix = coreseMatrix->Ac;
-	}
+  // 粗处理网格染色
+  coreseMatrix = &A;
+  for (int level = 1; level < numberOfMgLevels; level++)
+  {
+    //OptimizeMultiColoringCoarse(*coreseMatrix);
+    OptimizeMultiColoring(*coreseMatrix);
+    coreseMatrix = coreseMatrix->Ac;
+  }
 
 #endif
 
-	// 染色重排
+  // 染色重排
 
 #if defined(HPCG_USE_MULTICOLORING_RRARRANGE)
-	if (idx == 0)
-		printf("染色重排\n");
-	OptimizeMultiColoringRearrange(A);
-	SparseMatrix *curMatrix = &A; // 当前矩阵
-	for (int level = 1; level < numberOfMgLevels; level++)
-	{
-		curMatrix = curMatrix->Ac;
-		OptimizeMultiColoringRearrange(*curMatrix);
-	}
+  if (idx == 0)
+    printf("染色重排\n");
+  OptimizeMultiColoringRearrange(A);
+  SparseMatrix* curMatrix = &A; // 当前矩阵
+  for (int level = 1; level < numberOfMgLevels; level++)
+  {
+    curMatrix = curMatrix->Ac;
+    OptimizeMultiColoringRearrange(*curMatrix);
+  }
 #endif
 
 
 #if defined(HPCG_USE_BLOCK_MULTICOLORING)
-	if (idx == 0)
-		printf("分块染色\n");
-	OptimizeMultiColoringBlock(A);
-	SparseMatrix *curMatrix=&A;  //当前矩阵
+  if (idx == 0)
+    printf("分块染色\n");
+  OptimizeMultiColoringBlock(A);
+  SparseMatrix* curMatrix = &A;  //当前矩阵
 
-	for (int level = 1; level < numberOfMgLevels; level++)
-	{
-		curMatrix = curMatrix->Ac;
-		OptimizeMultiColoringBlock(*curMatrix);
-	}
+  for (int level = 1; level < numberOfMgLevels; level++)
+  {
+    curMatrix = curMatrix->Ac;
+    OptimizeMultiColoringBlock(*curMatrix);
+  }
 #endif
-	return 0;
+  return 0;
 }

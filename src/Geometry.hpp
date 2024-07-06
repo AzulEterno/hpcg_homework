@@ -21,11 +21,11 @@
 #ifndef GEOMETRY_HPP
 #define GEOMETRY_HPP
 
-/*!
-  This defines the type for integers that have local subdomain dimension.
+ /*!
+   This defines the type for integers that have local subdomain dimension.
 
-  Define as "long long" when local problem dimension is > 2^31
-*/
+   Define as "long long" when local problem dimension is > 2^31
+ */
 typedef int local_int_t;
 //typedef long long local_int_t;
 
@@ -59,8 +59,8 @@ struct Geometry_STRUCT {
   int npz;  //!< Number of processors in z-direction
   int pz; //!< partition ID of z-dimension process that starts the second region of nz values
   int npartz; //!< Number of partitions with varying nz values
-  int * partz_ids; //!< Array of partition ids of processor in z-direction where new value of nz starts (valid values are 1 to npz)
-  local_int_t * partz_nz; //!< Array of length npartz containing the nz values for each partition
+  int* partz_ids; //!< Array of partition ids of processor in z-direction where new value of nz starts (valid values are 1 to npz)
+  local_int_t* partz_nz; //!< Array of length npartz containing the nz values for each partition
   int ipx;  //!< Current rank's x location in the npx by npy by npz processor grid
   int ipy;  //!< Current rank's y location in the npx by npy by npz processor grid
   int ipz;  //!< Current rank's z location in the npx by npy by npz processor grid
@@ -83,13 +83,13 @@ typedef struct Geometry_STRUCT Geometry;
 
   @return Returns the MPI rank of the process assigned the row
 */
-inline int ComputeRankOfMatrixRow(const Geometry & geom, global_int_t index) {
+inline int ComputeRankOfMatrixRow(const Geometry& geom, global_int_t index) {
   global_int_t gnx = geom.gnx;
   global_int_t gny = geom.gny;
 
-  global_int_t iz = index/(gny*gnx);
-  global_int_t iy = (index-iz*gny*gnx)/gnx;
-  global_int_t ix = index%gnx;
+  global_int_t iz = index / (gny * gnx);
+  global_int_t iy = (index - iz * gny * gnx) / gnx;
+  global_int_t ix = index % gnx;
   // We now permit varying values for nz for any nx-by-ny plane of MPI processes.
   // npartz is the number of different groups of nx-by-ny groups of processes.
   // partz_ids is an array of length npartz where each value indicates the z process of the last process in the ith nx-by-ny group.
@@ -99,22 +99,23 @@ inline int ComputeRankOfMatrixRow(const Geometry & geom, global_int_t index) {
 
   int ipz = 0;
   int ipartz_ids = 0;
-  for (int i=0; i< geom.npartz; ++i) {
+  for (int i = 0; i < geom.npartz; ++i) {
     int ipart_nz = geom.partz_nz[i];
     ipartz_ids = geom.partz_ids[i] - ipartz_ids;
-    if (iz<= ipart_nz*ipartz_ids) {
-      ipz += iz/ipart_nz;
+    if (iz <= ipart_nz * ipartz_ids) {
+      ipz += iz / ipart_nz;
       break;
-    } else {
+    }
+    else {
       ipz += ipartz_ids;
-      iz -= ipart_nz*ipartz_ids;
+      iz -= ipart_nz * ipartz_ids;
     }
 
   }
-//  global_int_t ipz = iz/geom.nz;
-  int ipy = iy/geom.ny;
-  int ipx = ix/geom.nx;
-  int rank = ipx+ipy*geom.npx+ipz*geom.npy*geom.npx;
+  //  global_int_t ipz = iz/geom.nz;
+  int ipy = iy / geom.ny;
+  int ipx = ix / geom.nx;
+  int rank = ipx + ipy * geom.npx + ipz * geom.npy * geom.npx;
   return rank;
 }
 
@@ -124,10 +125,10 @@ inline int ComputeRankOfMatrixRow(const Geometry & geom, global_int_t index) {
 
  @param[inout] data the geometry data structure whose storage is deallocated
  */
-inline void DeleteGeometry(Geometry & geom) {
+inline void DeleteGeometry(Geometry& geom) {
 
-  delete [] geom.partz_nz;
-  delete [] geom.partz_ids;
+  delete[] geom.partz_nz;
+  delete[] geom.partz_ids;
 
   return;
 }

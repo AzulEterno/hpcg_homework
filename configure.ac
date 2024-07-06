@@ -3,7 +3,7 @@ AC_PREREQ([2.69])
 AC_INIT(hpcg, 3.1, info@hpcg-benchmark.org)
 AC_CONFIG_SRCDIR([src/main.cpp])
 dnl HPCG requires command line configuration
-dnl AC_CONFIG_HEADERS([src/hpcgconfig.hpp])
+dnl AC_CONFIG_HEADERS([src/config.hpp])
 
 AC_CONFIG_MACRO_DIR([m4])
 

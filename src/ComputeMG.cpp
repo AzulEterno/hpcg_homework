@@ -185,15 +185,21 @@ int ComputeMG(const SparseMatrix& A, const Vector& r, Vector& x) {
   assert(x.localLength == A.localNumberOfColumns);
 
   if (g_optimization_type == OPTIM_TYPE_REF) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeMG_ref" << std::endl;
+#endif
     return ComputeMG_ref(A, r, x);
   }
   else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeMG_zcy" << std::endl;
+#endif
     return ComputeMG_zcy(A, r, x);
   }
   else {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeMG_lmb" << std::endl;
+#endif
     return ComputeMG_lmb(A, r, x);
   }
 

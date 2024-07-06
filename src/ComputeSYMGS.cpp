@@ -65,15 +65,21 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x);
 */
 int ComputeSYMGS( const SparseMatrix & A, const Vector & r, Vector & x) {
   if (g_optimization_type == OPTIM_TYPE_REF) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeSYMGS_ref" << std::endl;
+#endif
     return ComputeSYMGS_ref(A, r, x);
   }
   else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeSYMGS_zcy" << std::endl;
+#endif
     return ComputeSYMGS_zcy(A, r, x);
   }
   else {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeSYMGS_lmb" << std::endl;
+#endif
     return ComputeSYMGS_lmb(A, r, x);
   }
 }
