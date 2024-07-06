@@ -151,15 +151,22 @@ int ComputeDotProduct(const local_int_t n, const Vector & x, const Vector & y,
   // return ComputeDotProduct_ref(n, x, y, result, time_allreduce);
   // std::cout << "ComputeDotProduct" << std::endl;
   if (g_optimization_type == OPTIM_TYPE_REF) {
+
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeDotProduct_ref" << std::endl;
+#endif
     return ComputeDotProduct_ref(n, x, y, result, time_allreduce);
   }
   else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeDotProduct_zcy" << std::endl;
+#endif
     return ComputeDotProduct_Intel_AVX_zcy(n, x, y, result, time_allreduce);
   }
   else {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeDotProduct_ref" << std::endl;
+#endif
     return ComputeDotProduct_ref(n, x, y, result, time_allreduce);
   }
 }

@@ -700,15 +700,21 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 int OptimizeProblem(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector& xexact) {
   if (g_optimization_type == OPTIM_TYPE_REF) {
     // Do nothing
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblem do nothing" << std::endl;
+#endif
     return 0;
   }
   else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblemGeneral_zcy" << std::endl;
+#endif
     return OptimizeProblemGeneral_zcy(A, data, b, x, xexact);
   }
   else {
+#if defined(DebugPrintExecuteCalls)
     std::cout << "OptimizeProblem_lmb" << std::endl;
+#endif
     return OptimizeProblem_lmb(A, data, b, x, xexact);
   }
 }

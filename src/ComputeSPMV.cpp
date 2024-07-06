@@ -60,15 +60,21 @@ int ComputeSPMV_zcy(const SparseMatrix& A, Vector& x, Vector& y);
 */
 int ComputeSPMV(const SparseMatrix& A, Vector& x, Vector& y) {
 	if (g_optimization_type == OPTIM_TYPE_LMB) {
+#if defined(DebugPrintExecuteCalls)
 		std::cout << "ComputeSPMV_lmb" << std::endl;
+#endif
 		return ComputeSPMV_lmb(A, x, y);
 	}
 	else if (g_optimization_type == OPTIM_TYPE_ZCY) {
+#if defined(DebugPrintExecuteCalls)
 		std::cout << "ComputeSPMV_zcy" << std::endl;
+#endif
 		return ComputeSPMV_zcy(A, x, y);
 	}
 	else {
+#if defined(DebugPrintExecuteCalls)
 		std::cout << "ComputeSPMV_ref" << std::endl;
+#endif
 		// This line and the next two lines should be removed and your version of ComputeSPMV should be used.
 		A.isSpmvOptimized = false;
 		return ComputeSPMV_ref(A, x, y);
