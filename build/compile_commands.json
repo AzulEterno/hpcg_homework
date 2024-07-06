@@ -1,0 +1,202 @@
+[
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/main.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/main.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/main.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/CG.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/CG.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/CG.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/CG_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/CG_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/CG_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/TestCG.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/TestCG.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/TestCG.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeResidual.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeResidual.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeResidual.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ExchangeHalo.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ExchangeHalo.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ExchangeHalo.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/GenerateGeometry.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateGeometry.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateGeometry.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/GenerateProblem.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateProblem.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateProblem.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/GenerateProblem_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateProblem_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateProblem_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/CheckProblem.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/CheckProblem.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/CheckProblem.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/OptimizeProblem.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/OptimizeProblem.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/OptimizeProblem.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ReadHpcgDat.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ReadHpcgDat.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ReadHpcgDat.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ReportResults.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ReportResults.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ReportResults.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/SetupHalo.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/SetupHalo.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/SetupHalo.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/SetupHalo_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/SetupHalo_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/SetupHalo_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/TestSymmetry.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/TestSymmetry.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/TestSymmetry.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/TestNorms.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/TestNorms.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/TestNorms.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/WriteProblem.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/WriteProblem.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/WriteProblem.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/YAML_Doc.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/YAML_Doc.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/YAML_Doc.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/YAML_Element.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/YAML_Element.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/YAML_Element.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeDotProduct.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeDotProduct.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeDotProduct.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeDotProduct_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeDotProduct_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeDotProduct_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/finalize.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/finalize.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/finalize.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/init.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/init.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/init.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/mytimer.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/mytimer.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/mytimer.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeSPMV.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSPMV.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSPMV.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeSPMV_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSPMV_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSPMV_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeSYMGS.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSYMGS.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSYMGS.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeSYMGS_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSYMGS_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeSYMGS_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeWAXPBY.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeWAXPBY.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeWAXPBY.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeWAXPBY_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeWAXPBY_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeWAXPBY_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeMG_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeMG_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeMG_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeMG.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeMG.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeMG.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeProlongation_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeProlongation_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeProlongation_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeRestriction_ref.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeRestriction_ref.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeRestriction_ref.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/GenerateCoarseProblem.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateCoarseProblem.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/GenerateCoarseProblem.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/ComputeOptimalShapeXYZ.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeOptimalShapeXYZ.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/ComputeOptimalShapeXYZ.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/MixedBaseCounter.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/MixedBaseCounter.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/MixedBaseCounter.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/CheckAspectRatio.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/CheckAspectRatio.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/CheckAspectRatio.cpp"
+},
+{
+  "directory": "/home/azuroso/sources/hpcg_series/hpcg_homework/build",
+  "command": "/usr/bin/c++ -DHPCG_NO_MPI -DHPCG_NO_OPENMP -g -o CMakeFiles/xhpcg.dir/src/OutputFile.cpp.o -c /home/azuroso/sources/hpcg_series/hpcg_homework/src/OutputFile.cpp",
+  "file": "/home/azuroso/sources/hpcg_series/hpcg_homework/src/OutputFile.cpp"
+}
+]

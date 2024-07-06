@@ -1,0 +1,3 @@
+/home/azuroso/sources/hpcg_series/hpcg_homework/build/CMakeFiles/xhpcg.dir
+/home/azuroso/sources/hpcg_series/hpcg_homework/build/CMakeFiles/edit_cache.dir
+/home/azuroso/sources/hpcg_series/hpcg_homework/build/CMakeFiles/rebuild_cache.dir
