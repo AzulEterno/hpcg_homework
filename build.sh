@@ -28,5 +28,5 @@ cd ../../
 
 cd "build_Custom/AVX512"
 
-../../configure MY_MPI_GCC_OMP
+../../configure MY_MPI_GCC_OMP_AVX512
 make
