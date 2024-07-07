@@ -5,5 +5,4 @@ bin/HPCG-Benchmark_3*.txt
 bin/xhpcg
 bin/hpcg20*.txt
 .DS_Store
-build_Custom
 .vscode
