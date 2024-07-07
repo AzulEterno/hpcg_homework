@@ -287,40 +287,7 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
   }
 #endif
 
-#ifdef HPCG_USE_SPMV_ARMPL
-  // Create the temporary data structures that will be copied (flags=0) inside the create call
-  local_int_t m = A.localNumberOfRows;
-  local_int_t n = A.localNumberOfColumns;
 
-  local_int_t nnz = A.localNumberOfNonzeros;
-
-  armpl_int_t* row_ptr = (armpl_int_t*)std::malloc((m + 1) * sizeof(armpl_int_t));
-  armpl_int_t* col_idx = (armpl_int_t*)std::malloc(nnz * sizeof(armpl_int_t));
-  double* vals = (double*)std::malloc(nnz * sizeof(double));
-
-  row_ptr[0] = 0;
-  for (local_int_t i = 0; i < m; i++) {
-    row_ptr[i + 1] = row_ptr[i] + A.nonzerosInRow[i];
-  }
-
-  global_int_t k = 0;
-  for (local_int_t i = 0; i < m; i++) {
-    for (local_int_t j = 0; j < A.nonzerosInRow[i]; j++) {
-      col_idx[k] = A.mtxIndL[i][j];
-      vals[k++] = A.matrixValues[i][j];
-    }
-  }
-
-  armpl_int_t flags = 0;
-  armpl_spmat_create_csr_d(&A.armpl_mat, m, n, row_ptr, col_idx, vals, flags);
-
-  free(row_ptr);
-  free(col_idx);
-  free(vals);
-
-  armpl_spmat_hint(A.armpl_mat, ARMPL_SPARSE_HINT_STRUCTURE, ARMPL_SPARSE_STRUCTURE_HPCG);
-  armpl_spmv_optimize(A.armpl_mat);
-#endif
 
   //Clean heap memory part
   if (blockIndices) {
@@ -354,7 +321,7 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
     delete[] nonzerosInRow;
   }
 
-  //End of clean Heal memory
+  //End of clean Heap memory
 
 
   if (A.mgData != 0) {
@@ -601,40 +568,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
   CopyVector(b, bReorder);
   CopyAndReorderVector(bReorder, b, *A.whichNewRowIsOldRow);
 
-#ifdef HPCG_USE_SPMV_ARMPL
-  // Create the temporary data structures that will be copied (flags=0) inside the create call
-  local_int_t m = A.localNumberOfRows;
-  local_int_t n = A.localNumberOfColumns;
 
-  local_int_t nnz = A.localNumberOfNonzeros;
-
-  armpl_int_t* row_ptr = (armpl_int_t*)std::malloc((m + 1) * sizeof(armpl_int_t));
-  armpl_int_t* col_idx = (armpl_int_t*)std::malloc(nnz * sizeof(armpl_int_t));
-  double* vals = (double*)std::malloc(nnz * sizeof(double));
-
-  row_ptr[0] = 0;
-  for (local_int_t i = 0; i < m; i++) {
-    row_ptr[i + 1] = row_ptr[i] + A.nonzerosInRow[i];
-  }
-
-  global_int_t k = 0;
-  for (local_int_t i = 0; i < m; i++) {
-    for (local_int_t j = 0; j < A.nonzerosInRow[i]; j++) {
-      col_idx[k] = A.mtxIndL[i][j];
-      vals[k++] = A.matrixValues[i][j];
-    }
-  }
-
-  armpl_int_t flags = 0;
-  armpl_spmat_create_csr_d(&A.armpl_mat, m, n, row_ptr, col_idx, vals, flags);
-
-  free(row_ptr);
-  free(col_idx);
-  free(vals);
-
-  armpl_spmat_hint(A.armpl_mat, ARMPL_SPARSE_HINT_STRUCTURE, ARMPL_SPARSE_STRUCTURE_HPCG);
-  armpl_spmv_optimize(A.armpl_mat);
-#endif
 
   //Clean heap memory
   if (matrixValues) {
