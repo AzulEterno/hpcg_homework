@@ -174,7 +174,7 @@ int ComputeSPMV_lmb(const SparseMatrix& A, Vector& x, Vector& y)
 int ComputeSPMV_zcy(const SparseMatrix& A, Vector& x, Vector& y) {
 
 	// This line and the next two lines should be removed and your version of ComputeSPMV should be used.
-	A.isSpmvOptimized = false;
+	A.isSpmvOptimized = true;
 
 	assert(x.localLength >= A.localNumberOfColumns);
 	assert(y.localLength >= A.localNumberOfRows);
