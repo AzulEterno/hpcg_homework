@@ -42,7 +42,7 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
   const local_int_t nrow = A.localNumberOfRows;
 
   // On the coarse grids we use block coloring algorithm
-  A.TDG = false;
+  A.TDG = false; //Multi-Level dependency graph indicater 
 
   local_int_t nyPerBlock = 1; // i.e., how many whole-NX is a block
   A.blockSize = A.geom->nx * nyPerBlock;
@@ -432,8 +432,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
   //printf("Local variable initalized \n");
 
   //if (A.tdg)
-    // Allocate the TDG structure. Starts as an empty matrix
-    //A.tdg = std::vector<std::vector<local_int_t> >();
+    // Allocate the TDG structure. Starts as an empty matrix 
 
   A.tdg = new std::vector<std::vector<local_int_t> >();
   //printf("A.tdg initalized \n");
@@ -444,7 +443,6 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
   for (local_int_t j = 0; j < A.nonzerosInRow[0]; j++) {
     //printf("j = %d \n", j);
     if (A.mtxIndL[0][j] != 0 && A.mtxIndL[0][j] < nrow) {
-      //printf("We start by adding the first row of the grid to the first level. This row has no L dependencies with depsVisited[A.mtxIndL[0][j] = %d]\n", A.mtxIndL[0][j]);
       depsVisited[A.mtxIndL[0][j]]++; // don't update deps from other domains
     }
   }

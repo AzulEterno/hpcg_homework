@@ -1,0 +1,128 @@
+{
+  "version": 3.1,
+  "Release date": "March 28, 2019",
+  "Machine Summary": {
+    "Distributed Processes": 4,
+    "Threads per processes": 30
+  },
+  "Global Problem Dimensions": {
+    "Global nx": 256,
+    "Global ny": 256,
+    "Global nz": 128
+  },
+  "Processor Dimensions": {
+    "npx": 2,
+    "npy": 2,
+    "npz": 1
+  },
+  "Local Domain Dimensions": {
+    "nx": 128,
+    "ny": 128,
+    "Lower ipz": 0,
+    "Upper ipz": 0,
+    "nz": 128
+  },
+  "Setup Information": {
+    "Setup Time": 6.25737
+  },
+  "Linear System Information": {
+    "Number of Equations": 8388608,
+    "Number of Nonzero Terms": 224140792
+  },
+  "Multigrid Information": {
+    "Number of coarse grid levels": 3,
+    "Coarse Grids": {
+      "Grid Level": 3,
+      "Number of Equations": 16384,
+      "Number of Nonzero Terms": 406456,
+      "Number of Presmoother Steps": 1,
+      "Number of Postsmoother Steps": 1
+    }
+  },
+  "Memory Use Information": {
+    "Total memory used for data (Gbytes)": 5.99818,
+    "Memory used for OptimizeProblem data (Gbytes)": 0,
+    "Bytes per equation (Total memory / Number of Equations)": 715.039,
+    "Memory used for linear system and CG (Gbytes)": 5.27854,
+    "Coarse Grids": {
+      "Grid Level": 3,
+      "Memory used": 0.00988758
+    }
+  },
+  "Spectral Convergence Tests": {
+    "Result": "PASSED",
+    "Unpreconditioned": {
+      "Maximum iteration count": 11,
+      "Expected iteration count": 12
+    },
+    "Preconditioned": {
+      "Maximum iteration count": 2,
+      "Expected iteration count": 2
+    }
+  },
+  "Departure from Symmetry |x'Ay-y'Ax|/(2*||x||*||A||*||y||)/epsilon": {
+    "Result": "PASSED",
+    "Departure for SpMV": 1.05257e-10,
+    "Departure for MG": 0
+  },
+  "Iteration Count Information": {
+    "Result": "PASSED",
+    "Reference CG iterations per set": 50,
+    "Optimized CG iterations per set": 50,
+    "Total number of reference iterations": 50,
+    "Total number of optimized iterations": 50
+  },
+  "Reproducibility Information": {
+    "Result": "PASSED",
+    "Scaled residual mean": 0.000259629,
+    "Scaled residual variance": 0
+  },
+  "Benchmark Time Summary": {
+    "Optimization phase": 2.58e-07,
+    "DDOT": 9.12292,
+    "WAXPBY": 6.67901,
+    "SpMV": 4.29661,
+    "MG": 40.5398,
+    "Total": 60.6423
+  },
+  "Floating Point Operations Summary": {
+    "Raw DDOT": 2533360000.0,
+    "Raw WAXPBY": 2533360000.0,
+    "Raw SpMV": 22862400000.0,
+    "Raw MG": 127711000000.0,
+    "Total": 155640000000.0,
+    "Total with convergence overhead": 155640000000.0
+  },
+  "GB/s Summary": {
+    "Raw Read B/W": 15.8122,
+    "Raw Write B/W": 3.65418,
+    "Raw Total B/W": 19.4663,
+    "Total with convergence and optimization phase overhead": 19.2675
+  },
+  "GFLOP/s Summary": {
+    "Raw DDOT": 0.277692,
+    "Raw WAXPBY": 0.379301,
+    "Raw SpMV": 5.32102,
+    "Raw MG": 3.15027,
+    "Raw Total": 2.56653,
+    "Total with convergence overhead": 2.56653,
+    "Total with convergence and optimization phase overhead": 2.54032
+  },
+  "User Optimization Overheads": {
+    "Optimization phase time (sec)": 2.58e-07,
+    "Optimization phase time vs reference SpMV+MG time": 2.92757e-07
+  },
+  "DDOT Timing Variations": {
+    "Min DDOT MPI_Allreduce time": 2.09592,
+    "Max DDOT MPI_Allreduce time": 2.71792,
+    "Avg DDOT MPI_Allreduce time": 2.33992
+  },
+  "Final Summary": {
+    "HPCG result is VALID with a GFLOP/s rating of": 2.54032,
+    "HPCG 2.4 rating for historical reasons is": 2.56653,
+    "Reference version of ComputeDotProduct used": "Performance results are most likely suboptimal",
+    "Reference version of ComputeSPMV used": "Performance results are most likely suboptimal",
+    "Results are valid but execution time (sec) is": 60.6423,
+    "Official results execution time (sec) must be at least": 1800
+  }
+}

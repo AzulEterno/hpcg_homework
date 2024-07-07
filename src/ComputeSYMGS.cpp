@@ -514,7 +514,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 	for (int curColor = 0; curColor < totalColors; curColor++) // 遍历所有颜色,同一种颜色可以并行
 	{
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (local_int_t i = 0; i < nrow; i++)
 		{
@@ -541,7 +541,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 	for (int curColor = totalColors - 1; curColor >= 0; curColor--)
 	{
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (local_int_t i = nrow - 1; i >= 0; i--)
 		{
@@ -591,7 +591,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 		local_int_t end = A.colorStart[curColor + 1];
 
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (int i = start; i < end; i++) // 遍历当前颜色节点
 		{
@@ -621,7 +621,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 		local_int_t start = A.colorStart[curColor];
 		local_int_t end = A.colorStart[curColor + 1];
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (local_int_t i = end - 1; i >= start; i--)
 		{
@@ -666,7 +666,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 	for (int curColor = 0; curColor < totalColors; curColor++) // 遍历所有颜色,同一种颜色可以并行
 	{
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (local_int_t i = 0; i < nrow; i += nx) // 并行所有颜色相同的块
 		{
@@ -695,7 +695,7 @@ int ComputeSYMGS_lmb(const SparseMatrix &A, const Vector &r, Vector &x)
 	for (int curColor = totalColors-1; curColor >= 0; curColor--)
 	{
 #ifndef HPCG_NO_OPENMP
-#pragma omp parallel for shared(colors, xv, matrixDiagonal)
+#pragma omp parallel for //shared(colors, xv, matrixDiagonal)
 #endif
 		for (local_int_t i = nrow - nx; i >= 0; i -= nx) // 并行所有颜色相同的块
 		{
