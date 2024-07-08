@@ -1,6 +1,8 @@
 #!/bin/bash
 
-Input_File="bin/hpcg.dat"
+export OMP_DISPLAY_ENV=TRUE
+
+Input_File_Template="bin/hpcg_data_template.dat"
 Executable_File="../../../bin/xhpcg"
 Extract_Program="python ../../../convert_json_result.py"
 Test_Folder="testing"
@@ -15,7 +17,8 @@ fi
 
 numbers=(1 2 4)
 
-block_size = 128
+block_size=128
+test_time=10
 
 
 
@@ -36,15 +39,24 @@ for m_name in "${Method_Names[@]}"; do
 
         if [ ! -d "${test_result_folder}" ]; then
             mkdir -p "${test_result_folder}"
-            cp "${Input_File}" "${test_result_folder}/hpcg.dat"
+            cp "${Input_File_Template}" "${test_result_folder}/hpcg.dat"
 
+
+            #Inject test input parameter
             echo "${block_size} ${block_size} ${block_size}" >> "${test_result_folder}/hpcg.dat"
-            echo "1" >> "${test_result_folder}/hpcg.dat"
+            echo "${test_time}" >> "${test_result_folder}/hpcg.dat"
 
             cd "${test_result_folder}"
             
 
             mpirun -np $np_count ${Executable_File} --mt=${index}
+
+
+            # Error stop
+            if [[ $? != 0 ]]; then
+                exit 1;
+
+            fi
 
             cd "../../../"
         else
