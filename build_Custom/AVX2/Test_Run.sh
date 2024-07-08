@@ -49,7 +49,7 @@ for m_name in "${Method_Names[@]}"; do
             cd "${test_result_folder}"
             
 
-            mpirun -np $np_count ${Executable_File} --mt=${index}
+            mpirun -np $np_count ${Executable_File} --mt=${index} --dt=1 --wt=1
 
 
             # Error stop
