@@ -15,7 +15,7 @@ fi
 
 numbers=(1 2 4)
 
-
+block_size = 128
 
 
 
@@ -37,8 +37,12 @@ for m_name in "${Method_Names[@]}"; do
         if [ ! -d "${test_result_folder}" ]; then
             mkdir -p "${test_result_folder}"
             cp "${Input_File}" "${test_result_folder}/hpcg.dat"
-            cd "${test_result_folder}"
 
+            echo "${block_size} ${block_size} ${block_size}" >> "${test_result_folder}/hpcg.dat"
+            echo "1" >> "${test_result_folder}/hpcg.dat"
+
+            cd "${test_result_folder}"
+            
 
             mpirun -np $np_count ${Executable_File} --mt=${index}
 
