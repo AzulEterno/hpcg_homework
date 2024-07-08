@@ -1,3 +1,14 @@
+/*
+File: OptimizeProblem.cpp
+Relative Path: \
+File Created: Monday, 8th July 2024 13:34:54
+Author: Azuroso
+-----
+Last Modified: Monday, 8th July 2024 13:34:55
+-----
+Copyright 2024 Azuroso
+*/
+
 
 //@HEADER
 // ***************************************************
@@ -34,6 +45,8 @@
 #include <mpi.h>
 #endif
 
+
+double zcy_opt_memuse_count = 0.0;
 
 int OptimizeProblem_lmb(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector& xexact);
 
@@ -79,6 +92,8 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
   assert(targetNumberOfColors % 2 == 0);
 
   A.firstRowOfBlock = new std::vector<local_int_t>(numberOfBlocks);
+
+  zcy_opt_memuse_count += sizeof(local_int_t) * numberOfBlocks;
   for (local_int_t i = 0, ii = 0; i < nrow; i += A.blockSize, ii++) {
     (*A.firstRowOfBlock)[ii] = i;
   }
@@ -173,6 +188,8 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
   }
 
   A.numberOfBlocksInColor = new std::vector<local_int_t>(totalColors);
+
+  zcy_opt_memuse_count += sizeof(local_int_t) * totalColors;
   for (local_int_t c = 0; c < totalColors; c++) {
     (*A.numberOfBlocksInColor)[c] = blocksInColor[c].size();
   }
@@ -220,9 +237,13 @@ int OptimizeCoarseProblem_zcy(SparseMatrix& A) {
   // We already consider the new order
   A.numberOfChunks = nrow / A.chunkSize;
   A.nonzerosInChunk = new std::vector<local_int_t>(A.numberOfChunks, 0);
+
+  zcy_opt_memuse_count += sizeof(local_int_t) * A.numberOfChunks;
   for (local_int_t i = 0; i < nrow; i += A.chunkSize) {
     local_int_t curChunk = i / A.chunkSize;
     (*A.nonzerosInChunk)[curChunk] = nonzerosInRow[i];
+
+
     for (local_int_t ii = i + 1; ii < i + A.chunkSize; ii++) {
       (*A.nonzerosInChunk)[curChunk] = (*A.nonzerosInChunk)[curChunk] < nonzerosInRow[ii] ? nonzerosInRow[ii] : (*A.nonzerosInChunk)[curChunk];
     }
@@ -405,6 +426,9 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
   //printf("A.tdg initalized \n");
   // We start by adding the first row of the grid to the first level. This row has no L dependencies
   std::vector<local_int_t> aux(1, 0);
+
+  zcy_opt_memuse_count += sizeof(local_int_t) * 2;
+
   A.tdg->push_back(aux);
   // Increment the number of dependencies visited for each of the neighbours
   for (local_int_t j = 0; j < A.nonzerosInRow[0]; j++) {
@@ -460,6 +484,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 
     // Add the just created level to the TDG structure
     A.tdg->push_back(rowsInLevel);
+    zcy_opt_memuse_count += sizeof(local_int_t) * rowsInLevel.size();
   }
 
 #if defined(ENABLE_DEBUG_PRINT)
@@ -467,7 +492,10 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 #endif
   // Now we need to create some structures to translate from old and new order (yes, we will reorder the matrix)
   A.whichNewRowIsOldRow = new std::vector<local_int_t>(A.localNumberOfColumns);
+
+  zcy_opt_memuse_count += sizeof(local_int_t) * (A.localNumberOfColumns);
   A.whichOldRowIsNewRow = new std::vector<local_int_t>(A.localNumberOfColumns);
+  zcy_opt_memuse_count += sizeof(local_int_t) * (A.localNumberOfColumns);
 
   local_int_t oldRow = 0;
   for (local_int_t level = 0; level < A.tdg->size(); level++) {
@@ -653,6 +681,12 @@ int OptimizeProblem(SparseMatrix& A, CGData& data, Vector& b, Vector& x, Vector&
 
 // Helper function (see OptimizeProblem.hpp for details)
 double OptimizeProblemMemoryUse(const SparseMatrix& A) {
+  if (g_optimization_type == OPTIM_TYPE_ZCY) {
+    return zcy_opt_memuse_count;
+
+
+
+  }
 
   return 0.0;
 

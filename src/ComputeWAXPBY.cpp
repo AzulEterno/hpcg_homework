@@ -49,27 +49,21 @@ int ComputeWAXPBY_Intel_AVX_zcy(const local_int_t n, const double alpha, const V
 */
 int ComputeWAXPBY(const local_int_t n, const double alpha, const Vector& x,
     const double beta, const Vector& y, Vector& w, bool& isOptimized) {
+    
+  assert(g_waxpy_type == WAXPY_TYPE_REF || g_waxpy_type == WAXPY_TYPE_ZCY);
 
-  if (g_optimization_type == OPTIM_TYPE_REF) {
+  if (g_waxpy_type == WAXPY_TYPE_REF) {
 #if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeWAXPBY_ref" << std::endl;
 #endif
     return ComputeWAXPBY_ref(n, alpha, x, beta, y, w);
   }
-  else if (g_optimization_type == OPTIM_TYPE_ZCY) {
-    // This line and the next two lines should be removed and your version of ComputeWAXPBY should be used.
-    //isOptimized = false;
+  else {
+    // g_waxpy_type is WAXPY_TYPE_ZCY
 #if defined(DebugPrintExecuteCalls)
     std::cout << "ComputeWAXPBY_zcy" << std::endl;
 #endif
-
     return ComputeWAXPBY_Intel_AVX_zcy(n, alpha, x, beta, y, w);
-  }
-  else {
-#if defined(DebugPrintExecuteCalls)
-    std::cout << "ComputeWAXPBY_ref" << std::endl;
-#endif
-    return ComputeWAXPBY_ref(n, alpha, x, beta, y, w);
   }
 }
 

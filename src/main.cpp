@@ -61,6 +61,8 @@ using std::endl;
 #include "TestSymmetry.hpp"
 #include "TestNorms.hpp"
 
+
+
 /*!
   Main driver program: Construct synthetic problem, run V&V tests, compute benchmark parameters, run benchmark, report results.
 
@@ -98,6 +100,16 @@ int main(int argc, char * argv[]) {
   MPI_Barrier(MPI_COMM_WORLD);
 #endif
 #endif
+
+#ifndef HPCG_NO_OPENMP
+  {
+    omp_set_dynamic(true);
+
+    std::cout << "Enabling dynamic OPENMP thread allocation.";
+  }
+
+#endif
+
 
   local_int_t nx,ny,nz;
   nx = (local_int_t)params.nx;

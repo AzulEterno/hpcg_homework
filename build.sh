@@ -18,6 +18,7 @@ if [ ! -d "build_Custom/AVX512" ]; then
 fi
 
 
+
 cd "build_Custom/AVX2"
 
 make clean && ../../configure MY_MPI_GCC_OMP

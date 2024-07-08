@@ -70,7 +70,7 @@ int HPCG_Init(int* argc_p, char*** argv_p, HPCG_Params& params) {
   char** argv = *argv_p;
   char fname[80];
   int i, j, * iparams;
-  char cparams[][7] = { "--nx=", "--ny=", "--nz=", "--rt=", "--pz=", "--zl=", "--zu=", "--npx=", "--npy=", "--npz=", "--mt=" };
+  char cparams[][7] = { "--nx=", "--ny=", "--nz=", "--rt=", "--pz=", "--zl=", "--zu=", "--npx=", "--npy=", "--npz=", "--mt=", "--dt=", "--wt="};
   time_t rawtime;
   tm* ptm;
   const int nparams = (sizeof cparams) / (sizeof cparams[0]);
@@ -115,6 +115,25 @@ int HPCG_Init(int* argc_p, char*** argv_p, HPCG_Params& params) {
   }
   printf("Using Methology :%s\n", optimizationTypeToString(g_optimization_type));
 
+  int dt_index = iparams[11];
+  if (dt_index < (int)DOT_PRODUCT_TYPE_REF || dt_index >(int)DOT_PRODUCT_TYPE_ZCY) {
+    g_dot_product_type = DOT_PRODUCT_TYPE_REF;
+    printf("Invalid DotProductType Index:%d, using Reference method.\n", dt_index);
+  }
+  else {
+    g_dot_product_type = static_cast<DotProductType>(dt_index);
+  }
+  printf("Using DotProduct :%s\n", dotproductTypeToString(g_dot_product_type));
+
+  int wt_index = iparams[12];
+  if (wt_index < (int)WAXPY_TYPE_REF || wt_index >(int)WAXPY_TYPE_ZCY) {
+    g_waxpy_type = WAXPY_TYPE_REF;
+    printf("Invalid WAXPYType Index:%d, using Reference method.\n", wt_index);
+  }
+  else {
+    g_waxpy_type = static_cast<WAXPYType>(wt_index);
+  }
+  printf("Using WAXPY :%s\n", waxpyTypeToString(g_waxpy_type));
 
   // Check for small or unspecified nx, ny, nz values
   // If any dimension is less than 16, make it the max over the other two dimensions, or 16, whichever is largest

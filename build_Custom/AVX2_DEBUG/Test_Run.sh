@@ -1,4 +1,6 @@
 #!/bin/bash
+export OMP_DISPLAY_ENV=TRUE
+
 
 Input_File="bin/hpcg.dat"
 Executable_File="../../../bin/xhpcg"
@@ -20,7 +22,7 @@ block_size = 128
 
 
 # Define an array with the string list
-Method_Names=("REF" "ZCY" "LWB")
+Method_Names=("REF" "ZCY")
 
 # Initialize a counter
 index=0
@@ -44,7 +46,7 @@ for m_name in "${Method_Names[@]}"; do
             cd "${test_result_folder}"
             
 
-            mpirun -np $np_count ${Executable_File} --mt=${index}
+            mpirun -np $np_count ${Executable_File} --mt=${index} --dt=1 --wt=1
 
             cd "../../../"
         else

@@ -24,6 +24,13 @@
 #include <fstream>
 #include "Geometry.hpp"
 
+#ifndef HPCG_NO_OPENMP
+#include <omp.h>
+
+#endif
+
+
+
 extern std::ofstream HPCG_fout;
 
 struct HPCG_Params_STRUCT {
