@@ -105,7 +105,7 @@ int main(int argc, char * argv[]) {
   {
     omp_set_dynamic(true);
 
-    std::cout << "Enabling dynamic OPENMP thread allocation.";
+    std::cout << "Enabling dynamic OPENMP thread allocation." << std::endl;
   }
 
 #endif
