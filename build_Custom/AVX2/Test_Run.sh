@@ -28,11 +28,11 @@ test_time=10
 # Define an array with the string list
 Method_Names=("REF" "ZCY" "LWB")
 
-# Initialize a counter
-index=0
+
 for block_size in "${testBlkSizeArray[@]}"; do
 
-    
+    # Initialize a counter
+    index=0
 
     # Iterate over the array and print each string with its index
     for m_name in "${Method_Names[@]}"; do
