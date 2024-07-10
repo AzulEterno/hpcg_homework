@@ -11,7 +11,7 @@ def main():
     dict_data_list: list[dict] = []
 
     Methods = ["REF", "ZCY", "LWB"]
-    block_sizes = [32, 64, 128, 256, 512]
+    block_sizes = [32, 64, 128, 256]
     base_path = "testing"
 
     for block_size in block_sizes:
@@ -51,7 +51,7 @@ def main():
                         "Final Summary", {}
                     ).get("HPCG result is VALID with a GFLOP/s rating of")
 
-                    new_data_key = f"{block_size}-{method_name}-{np_num}"
+                    new_data_key = f"I{block_size}-{method_name}-{np_num}"
                     new_data_bundle["Id"] = new_data_key
 
                     dict_data_key_list.append(new_data_key)

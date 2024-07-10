@@ -16,7 +16,7 @@ fi
 
 
 
-testBlkSizeArray=(32 64 128 256 512)
+testBlkSizeArray=(32 64 128 256)
 
 numbers=(1 2 4)
 
@@ -64,15 +64,22 @@ for block_size in "${testBlkSizeArray[@]}"; do
 
                 cd "${InnerDirLevel}"
             else
+                
                 cd "${test_result_folder}"
+                echo "Result folder existed for Input Size = ${block_size}, m_name = ${m_name}, np_count = ${np_count}, pwd: $(pwd)";
+
                 matching_files=$(ls HPCG-Benchmark_*.txt)
                 file_count=$(echo "$matching_files" | wc -w)
 
-                if [[ file_count == 1 ]]; then
+                if [[ file_count -eq 1 ]]; then
                     # Print matching files
                     for file in $matching_files; do
+                        echo "Transcripting result \"${file}\" into json."
+
                         cat ${file} | ${Extract_Program} > "Result.json"
                     done
+                else
+                    echo "Unexpected result file match count: ${file_count}, Matched files: ${matching_files}"
                 fi
 
                 cd "${InnerDirLevel}"
