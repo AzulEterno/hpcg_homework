@@ -63,6 +63,25 @@ for block_size in "${testBlkSizeArray[@]}"; do
                 fi
 
                 cd "${InnerDirLevel}"
+            
+            elif [[ $file_count -ge 2 ]]; then
+                cd "${test_result_folder}"
+                echo "Multiple result files found: ${file_count}, Matched files: ${matching_files}"
+                # Sort files by modification time and delete all but the newest one
+                sorted_files=$(ls -t HPCG-Benchmark_*.txt)
+                newest_file=$(echo "$sorted_files" | head -n 1)
+                echo "Keeping newest file: ${newest_file}"
+                old_files=$(echo "$sorted_files" | tail -n +2)
+                echo "Deleting older files: ${old_files}"
+                for file in $old_files; do
+                    rm -f "$file"
+                    echo "Deleted: $file"
+                done
+                # Transcribe the newest file into json
+                echo "Transcripting result \"${newest_file}\" into json."
+                cat "${newest_file}" | ${Extract_Program} > "Result.json"
+                
+                cd "${InnerDirLevel}"
             else
                 
                 cd "${test_result_folder}"
