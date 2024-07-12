@@ -80,12 +80,12 @@ struct SparseMatrix_STRUCT {
 #endif
 
   // ZCY
-  std::vector<local_int_t>* whichNewRowIsOldRow = nullptr;
-  std::vector<local_int_t>* whichOldRowIsNewRow = nullptr;
+  std::vector<local_int_t>* whichNewRowIsOldRow = nullptr; //记录交换的新行和旧行的关系
+  std::vector<local_int_t>* whichOldRowIsNewRow = nullptr;//记录交换的旧行和新行的关系
   std::vector<local_int_t>* firstRowOfBlock = nullptr;
   std::vector<local_int_t>* nonzerosInChunk = nullptr;
-  std::vector<std::vector<local_int_t>>* tdg = nullptr;
-  std::vector<local_int_t>* numberOfBlocksInColor = nullptr;
+  std::vector<std::vector<local_int_t>>* tdg = nullptr; //指示是否使用多层任务依赖
+  std::vector<local_int_t>* numberOfBlocksInColor = nullptr; //记录染色的块数
 
   bool TDG;
   local_int_t blockSize;

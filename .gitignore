@@ -6,15 +6,15 @@ bin/xhpcg
 bin/hpcg20*.txt
 .DS_Store
 .vscode
-
+.cmake
 
 
 build_Custom/AVX2/src
-build_Custom/AVX2/testing
+build_Custom/AVX2/testing*
 
 build_Custom/AVX2_DEBUG/src
-build_Custom/AVX2_DEBUG/testing
+build_Custom/AVX2_DEBUG/testing*
 build_Custom/AVX512/src
-build_Custom/AVX512/testing
+build_Custom/AVX512/testing*
 build_MY_MPI_GCC_OMP
 build_MY_MPI_GCC_OMP_DEBUG_PRINT
