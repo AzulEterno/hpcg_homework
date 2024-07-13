@@ -10,7 +10,7 @@ def main():
     dict_data_key_list: list[str] = []
     dict_data_list: list[dict] = []
 
-    Methods = ["REF", "ZCY", "LWB"]
+    Methods = ["REF", "ZCY", "LMB"]
     block_sizes = [32, 64, 128, 256]
     base_path = "testing"
 

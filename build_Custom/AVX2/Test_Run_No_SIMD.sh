@@ -26,7 +26,7 @@ test_time=10
 
 
 # Define an array with the string list
-Method_Names=("REF" "ZCY" "LWB")
+Method_Names=("REF" "ZCY" "LMB")
 
 
 for block_size in "${testBlkSizeArray[@]}"; do

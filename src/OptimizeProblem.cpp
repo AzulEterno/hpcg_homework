@@ -384,10 +384,10 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 
   const local_int_t nrow = A.localNumberOfRows;
 
-  // On the finest grid we use TDG algorithm
+  // 最精细层我们使用TDG优化，否则使用分块染色法
   A.TDG = true;
 
-  // Create an auxiliary vector to store the number of dependencies on L for every row
+  // 创造保存依赖关系的辅助数据结构
   std::vector<unsigned char> nonzerosInLowerDiagonal(nrow, 0);
 
   /*
@@ -470,7 +470,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 
 
 
-    // Update some information
+    // 更新一下已有的结构
     for (local_int_t i = 0; i < rowsInLevel.size(); i++) {
       rowsProcessed++;
       local_int_t row = rowsInLevel[i];
@@ -482,7 +482,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
       }
     }
 
-    // Add the just created level to the TDG structure
+    // 将TDG下一级TDG优化结构推入保存
     A.tdg->push_back(rowsInLevel);
     zcy_opt_memuse_count += sizeof(local_int_t) * rowsInLevel.size();
   }
@@ -490,7 +490,8 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
 #if defined(ENABLE_DEBUG_PRINT)
   printf("Optimize problem Phase 4 Started\n");
 #endif
-  // Now we need to create some structures to translate from old and new order (yes, we will reorder the matrix)
+
+  // 创造一些数据结构使得矩阵从旧的顺序的变成成新的顺序
   A.whichNewRowIsOldRow = new std::vector<local_int_t>(A.localNumberOfColumns);
 
   zcy_opt_memuse_count += sizeof(local_int_t) * (A.localNumberOfColumns);
@@ -523,7 +524,7 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
     mtxIndL[i] = new local_int_t[27];
   }
 
-  // And finally we reorder (and translate at the same time)
+  // 重排序并翻译矩阵
 #ifndef HPCG_NO_OPENMP
 #pragma omp parallel for
 #endif
@@ -536,12 +537,12 @@ int OptimizeProblemGeneral_zcy(SparseMatrix& A, CGData& data, Vector& b, Vector&
       for (local_int_t j = 0; j < A.nonzerosInRow[oldRow]; j++) {
         local_int_t curOldCol = A.mtxIndL[oldRow][j];
         matrixValues[newRow][j] = A.matrixValues[oldRow][j];
-        mtxIndL[newRow][j] = curOldCol < nrow ? (*A.whichNewRowIsOldRow)[curOldCol] : curOldCol; // don't translate if row is external
+        mtxIndL[newRow][j] = curOldCol < nrow ? (*A.whichNewRowIsOldRow)[curOldCol] : curOldCol; // 不要操作外部行
       }
     }
   }
 
-  // time to replace structures
+  // 更改一下矩阵结构体数据集
 #ifndef HPCG_NO_OPENMP
 #pragma omp parallel for
 #endif
